@@ -14,7 +14,7 @@ do
         continue
         else
         echo $port
-        desc_eth=$(sshpass -p 'Bravo&mé94&' ssh swpfs-5410-01 show interface description \| incl $port)
+        desc_eth=$(sshpass -p '&' ssh swpfs-5410-01 show interface description \| incl $port)
         echo $desc_eth
 
 
