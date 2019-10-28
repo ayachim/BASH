@@ -2,27 +2,29 @@
 #ce script prend les adresse mac trouve releve sur le switch
 #puis les comapre a un fichier nmap 10.41.0.0
 
-
-echo "" > grep_corespond_ok
+echo "MAC; port; vlan;ip;info;fqdn " >resultat_sw01.csv
 while read MAC
 do
-	mac_cisco="${MAC:0:12}"
-	var1=$(cat rm_mac |grep -i $mac_cisco)
-	if [ -z "$var1" ]
-	then
-	continue
-	else
+        vlan=$(echo $MAC |cut -d";" -f1)
+        port=$(echo $MAC |cut -d";" -f3)
+        mac=$(echo $MAC |cut -d";" -f2)
+        var1=$(cat rm_mac2 |grep -i $mac)
+        if [ -z "$var1" ]
+        then
+        continue
+        else
+        echo $port
+        desc_eth=$(sshpass -p 'Bravo&mé94&' ssh swpfs-5410-01 show interface description \| incl $port)
+        echo $desc_eth
 
-		var1=$(cat rm_mac |grep -i $mac_cisco)
-		#tofile="Mac & port ;${MAC};Mac & Ip & vendor;${var1}"
 
-		host_ip=$(host $(echo $var1 |cut -d";" -f1))
+                host_ip=$(host $(echo $var1 |cut -d";" -f1))
 
-		tofile="MAC :${MAC:0:12} port : ${MAC:13:50} ip: $(echo $var1 |cut -d";" -f1) mac : $(echo $var1 |cut -d";" -f2) ${host_ip}"
-		echo "${tofile}" >> grep_corespond_ok
+                tofile="$mac; $port;$vlan; $(echo $var1 |cut -d";" -f1);$(echo $var1 |cut -d";" -f2); ${host_ip}"
+                echo "${tofile}" >> resultat_sw01.csv
 
-	fi
+        fi
 
-done < mac_cisco2
+done < mac_cisco
 
 
