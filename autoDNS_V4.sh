@@ -2,7 +2,8 @@
 #!/bin/bash
 
 #automatiser creation de zone dns
-
+#lancer ./autoDNS_V4.sh exemple.fr 10.0.0.1 slave.exemple.fr 10.0.0.2
+ 
 ###############################
 #read -p "nom de domaine" nom_dom
 #read -p "l'adresse ip machine" ipm
